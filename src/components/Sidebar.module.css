@@ -8,7 +8,7 @@
   align-items: center;
   height: calc(100vh - 4.8rem);
 }
-
+/* 
 .footer {
   margin-top: auto;
 }
@@ -16,4 +16,4 @@
 .copyright {
   font-size: 1.2rem;
   color: var(--color-light--1);
-}
+} */
