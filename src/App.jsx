@@ -11,6 +11,7 @@ import Login from "./pages/Login";
 import CityList from "./components/CityList";
 
 const BASE_URL = "http://localhost:9000";
+const jsonFilePath = './data/cities.json';
 
 function App() {
   const [cities, setCities] = useState([]);
@@ -20,9 +21,10 @@ function App() {
     async function fetchCities() {
       try {
         setIsLoading(true);
-        const res = await fetch(`${BASE_URL}/cities`);
+        // const res = await fetch(`${BASE_URL}/cities`);
+        const res = await fetch(jsonFilePath);
         const data = await res.json();
-        setCities(data);
+        setCities(data.cities);
       } catch {
         console.warn("can not loading data ....");
       } finally {
