@@ -12,7 +12,7 @@ import CityList from "./components/CityList";
 import CountryList from "./components/countryList";
 import City from "./components/City";
 
-// const BASE_URL = "http://localhost:9000";
+const BASE_URL = "http://localhost:9000";
 const jsonFilePath = "../data/cities.json";
 
 function App() {
@@ -23,10 +23,11 @@ function App() {
     async function fetchCities() {
       try {
         setIsLoading(true);
-        // const res = await fetch(`${BASE_URL}/cities`);
-        const res = await fetch(jsonFilePath);
+        const res = await fetch(`${BASE_URL}/cities`);
+        // const res = await fetch(jsonFilePath);
         const data = await res.json();
-        setCities(data.cities);
+        setCities(data);
+        // setCities(data.cities);
       } catch {
         console.warn("can not loading data ....");
       } finally {
