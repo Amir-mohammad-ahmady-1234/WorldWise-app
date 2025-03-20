@@ -37,7 +37,7 @@ function App() {
         <Route path="*" element={<NotFound />} />
       </Routes>
     </BrowserRouter>
-            </CitiesProvider>
+        </CitiesProvider>
   );
 }
 
