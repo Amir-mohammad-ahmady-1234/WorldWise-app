@@ -3,12 +3,12 @@ import { createContext, useContext, useEffect, useState } from "react";
 const BASE_URL = "http://localhost:9000";
 const jsonFilePath = "../data/cities.json";
 
-const CitiesContext = createContext()
+const CitiesContext = createContext();
 
-function CitiesProvider ({children}) {
-    const [cities, setCities] = useState([]);
+function CitiesProvider({ children }) {
+  const [cities, setCities] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
-  const [currentCity, setCurrentCity] = useState({})
+  const [currentCity, setCurrentCity] = useState({});
 
   useEffect(function () {
     async function fetchCities() {
@@ -28,7 +28,7 @@ function CitiesProvider ({children}) {
     fetchCities();
   }, []);
 
-  async function getCity (id) {
+  async function getCity(id) {
     try {
       setIsLoading(true);
       const res = await fetch(`${BASE_URL}/cities/${id}`);
@@ -42,19 +42,21 @@ function CitiesProvider ({children}) {
       setIsLoading(false);
     }
   }
-  
 
-
-  return <CitiesContext.Provider value={{cities, isLoading, getCity, currentCity, isLoading}}>
-    {children}
-  </CitiesContext.Provider>
+  return (
+    <CitiesContext.Provider
+      value={{ cities, isLoading, getCity, currentCity, isLoading }}
+    >
+      {children}
+    </CitiesContext.Provider>
+  );
 }
 
-function useCities () {
-  const context = useContext(CitiesContext)
-  if (context === undefined) throw new Error('CitiesContext was used out of the CitiesProvider!')
-  return context
+function useCities() {
+  const context = useContext(CitiesContext);
+  if (context === undefined)
+    throw new Error("CitiesContext was used out of the CitiesProvider!");
+  return context;
 }
 
-
-export {CitiesProvider, useCities}
+export { CitiesProvider, useCities };
