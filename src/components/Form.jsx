@@ -1,17 +1,44 @@
-// "https://api.bigdatacloud.net/data/reverse-geocode-client?latitude=0&longitude=0"
-
-import { useState } from "react";
+import { useReducer, useEffect } from "react";
 import Button from "./Button";
 import BackButton from "./BackButton";
 
 import styles from "./Form.module.css";
 import { useUrlSearchParam } from "../hooks/useUrlSearchParam";
-import { useEffect } from "react";
 import Spinner from "./Spinner";
 import Message from "./Message";
 
 const BASE_GETCITYDATA_API_URL =
   "https://api.bigdatacloud.net/data/reverse-geocode-client";
+
+// Action Types
+const ACTIONS = {
+  SET_FIELD: "setField",
+  SET_LOADING: "setLoading",
+  SET_ERROR: "setError",
+};
+
+// Reducer Function
+function reducer(state, action) {
+  switch (action.type) {
+    case ACTIONS.SET_FIELD:
+      return {
+        ...state,
+        [action.field]: action.value,
+      };
+    case ACTIONS.SET_LOADING:
+      return {
+        ...state,
+        isLoadingGeoCoding: action.value,
+      };
+    case ACTIONS.SET_ERROR:
+      return {
+        ...state,
+        errorLoc: action.value,
+      };
+    default:
+      return state;
+  }
+}
 
 export function convertToEmoji(countryCode) {
   const codePoints = countryCode
@@ -23,20 +50,26 @@ export function convertToEmoji(countryCode) {
 
 function Form() {
   const [lat, lng] = useUrlSearchParam();
-  const [cityName, setCityName] = useState("");
-  const [country, setCountry] = useState("");
-  const [date, setDate] = useState(new Date());
-  const [notes, setNotes] = useState("");
-  const [isLoadingGeoCoding, setIsLoadingGeoCoding] = useState(false);
-  const [errorLoc, setErrorLoc] = useState("");
-  const [emoji, setEmoji] = useState("");
+
+  const initialState = {
+    cityName: "",
+    country: "",
+    date: new Date(),
+    notes: "",
+    isLoadingGeoCoding: false,
+    errorLoc: "",
+    emoji: "",
+  };
+
+  const [state, dispatch] = useReducer(reducer, initialState);
 
   useEffect(
     function () {
       async function fetchCityData() {
         try {
-          setErrorLoc("");
-          setIsLoadingGeoCoding(true);
+          dispatch({ type: ACTIONS.SET_ERROR, value: "" });
+          dispatch({ type: ACTIONS.SET_LOADING, value: true });
+
           const res = await fetch(
             `${BASE_GETCITYDATA_API_URL}?latitude=${lat}&longitude=${lng}`
           );
@@ -47,13 +80,13 @@ function Form() {
               "You cannot access this location! Please choose another location."
             );
 
-          setCityName(data.city || data.locality || "");
-          setCountry(data.countryName);
-          setEmoji(convertToEmoji(data.countryCode));
+          dispatch({ type: ACTIONS.SET_FIELD, field: "cityName", value: data.city || data.locality || "" });
+          dispatch({ type: ACTIONS.SET_FIELD, field: "country", value: data.countryName });
+          dispatch({ type: ACTIONS.SET_FIELD, field: "emoji", value: convertToEmoji(data.countryCode) });
         } catch (err) {
-          setErrorLoc(err.message);
+          dispatch({ type: ACTIONS.SET_ERROR, value: err.message });
         } finally {
-          setIsLoadingGeoCoding(false);
+          dispatch({ type: ACTIONS.SET_LOADING, value: false });
         }
       }
       fetchCityData();
@@ -61,9 +94,9 @@ function Form() {
     [lat, lng]
   );
 
-  if (errorLoc) return <Message message={errorLoc} />;
+  if (state.errorLoc) return <Message message={state.errorLoc} />;
 
-  if (isLoadingGeoCoding) return <Spinner />;
+  if (state.isLoadingGeoCoding) return <Spinner />;
 
   return (
     <form className={styles.form}>
@@ -71,27 +104,33 @@ function Form() {
         <label htmlFor="cityName">City name</label>
         <input
           id="cityName"
-          onChange={(e) => setCityName(e.target.value)}
-          value={cityName}
+          onChange={(e) =>
+            dispatch({ type: ACTIONS.SET_FIELD, field: "cityName", value: e.target.value })
+          }
+          value={state.cityName}
         />
-        <span className={styles.flag}>{emoji}</span>
+        <span className={styles.flag}>{state.emoji}</span>
       </div>
 
       <div className={styles.row}>
-        <label htmlFor="date">When did you go to {cityName}?</label>
+        <label htmlFor="date">When did you go to {state.cityName}?</label>
         <input
           id="date"
-          onChange={(e) => setDate(e.target.value)}
-          value={date}
+          onChange={(e) =>
+            dispatch({ type: ACTIONS.SET_FIELD, field: "date", value: e.target.value })
+          }
+          value={state.date}
         />
       </div>
 
       <div className={styles.row}>
-        <label htmlFor="notes">Notes about your trip to {cityName}</label>
+        <label htmlFor="notes">Notes about your trip to {state.cityName}</label>
         <textarea
           id="notes"
-          onChange={(e) => setNotes(e.target.value)}
-          value={notes}
+          onChange={(e) =>
+            dispatch({ type: ACTIONS.SET_FIELD, field: "notes", value: e.target.value })
+          }
+          value={state.notes}
         />
       </div>
 
