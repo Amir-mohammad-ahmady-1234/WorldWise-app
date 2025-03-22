@@ -43,7 +43,7 @@ export function convertToEmoji(countryCode) {
 
 function Form() {
   const [lat, lng] = useUrlSearchParam();
-  const { addCity, cities } = useCities();
+  const { addCity } = useCities();
   const navigate = useNavigate();
 
   const initialState = {

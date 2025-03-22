@@ -35,42 +35,6 @@
         "lng": 13.376933665713324
       },
       "id": "98443197"
-    },
-    {
-      "id": "fb9e",
-      "cityName": "Calzadilla",
-      "country": "Spain",
-      "emoji": "🇪🇸",
-      "date": "2025-03-22T22:34:00.799Z",
-      "notes": "yoyo",
-      "position": {
-        "lat": "40.027614437486655",
-        "lng": "-6.569824218750001"
-      }
-    },
-    {
-      "id": "112a",
-      "cityName": "Tehran",
-      "country": "Iran (Islamic Republic of)",
-      "emoji": "🇮🇷",
-      "date": "2025-03-22T22:34:34.215Z",
-      "notes": "my location",
-      "position": {
-        "lat": "35.733893910252526",
-        "lng": "51.3374537229538"
-      }
-    },
-    {
-      "id": "4c5a",
-      "cityName": "Hamadan",
-      "country": "Iran (Islamic Republic of)",
-      "emoji": "🇮🇷",
-      "date": "2025-03-22T22:36:09.563Z",
-      "notes": "",
-      "position": {
-        "lat": "34.77771580360469",
-        "lng": "48.82324218750001"
-      }
     }
   ]
 }
