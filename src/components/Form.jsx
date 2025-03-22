@@ -1,51 +1,42 @@
 import { useReducer, useEffect } from "react";
 import Button from "./Button";
 import BackButton from "./BackButton";
-
 import styles from "./Form.module.css";
 import { useUrlSearchParam } from "../hooks/useUrlSearchParam";
 import Spinner from "./Spinner";
 import Message from "./Message";
 
+// react-picker
+import DatePicker from "react-datepicker";
+import "react-datepicker/dist/react-datepicker.css";
+
 const BASE_GETCITYDATA_API_URL =
   "https://api.bigdatacloud.net/data/reverse-geocode-client";
-
-// Action Types
-const ACTIONS = {
-  SET_FIELD: "setField",
-  SET_LOADING: "setLoading",
-  SET_ERROR: "setError",
-};
 
 // Reducer Function
 function reducer(state, action) {
   switch (action.type) {
-    case ACTIONS.SET_FIELD:
-      return {
-        ...state,
-        [action.field]: action.value,
-      };
-    case ACTIONS.SET_LOADING:
-      return {
-        ...state,
-        isLoadingGeoCoding: action.value,
-      };
-    case ACTIONS.SET_ERROR:
-      return {
-        ...state,
-        errorLoc: action.value,
-      };
+    case "SET_FIELD":
+      return { ...state, ...action.payload };
+
+    case "SET_LOADING":
+      return { ...state, isLoadingGeoCoding: action.payload };
+
+    case "SET_ERROR":
+      return { ...state, errorLoc: action.payload };
+
     default:
       return state;
   }
 }
 
 export function convertToEmoji(countryCode) {
-  const codePoints = countryCode
-    .toUpperCase()
-    .split("")
-    .map((char) => 127397 + char.charCodeAt());
-  return String.fromCodePoint(...codePoints);
+  return String.fromCodePoint(
+    ...countryCode
+      .toUpperCase()
+      .split("")
+      .map((char) => 127397 + char.charCodeAt())
+  );
 }
 
 function Form() {
@@ -63,40 +54,45 @@ function Form() {
 
   const [state, dispatch] = useReducer(reducer, initialState);
 
-  useEffect(
-    function () {
-      async function fetchCityData() {
-        try {
-          dispatch({ type: ACTIONS.SET_ERROR, value: "" });
-          dispatch({ type: ACTIONS.SET_LOADING, value: true });
+  useEffect(() => {
+    if (!lat && !lng) return;
 
-          const res = await fetch(
-            `${BASE_GETCITYDATA_API_URL}?latitude=${lat}&longitude=${lng}`
+    async function fetchCityData() {
+      try {
+        dispatch({ type: "SET_ERROR", payload: "" });
+        dispatch({ type: "SET_LOADING", payload: true });
+
+        const res = await fetch(
+          `${BASE_GETCITYDATA_API_URL}?latitude=${lat}&longitude=${lng}`
+        );
+        const data = await res.json();
+
+        if (!data.countryCode)
+          throw new Error(
+            "You cannot access this location! Please choose another location."
           );
-          const data = await res.json();
 
-          if (!data.countryCode)
-            throw new Error(
-              "You cannot access this location! Please choose another location."
-            );
-
-          dispatch({ type: ACTIONS.SET_FIELD, field: "cityName", value: data.city || data.locality || "" });
-          dispatch({ type: ACTIONS.SET_FIELD, field: "country", value: data.countryName });
-          dispatch({ type: ACTIONS.SET_FIELD, field: "emoji", value: convertToEmoji(data.countryCode) });
-        } catch (err) {
-          dispatch({ type: ACTIONS.SET_ERROR, value: err.message });
-        } finally {
-          dispatch({ type: ACTIONS.SET_LOADING, value: false });
-        }
+        dispatch({
+          type: "SET_FIELD",
+          payload: {
+            cityName: data.city || data.locality || "",
+            country: data.countryName,
+            emoji: convertToEmoji(data.countryCode),
+          },
+        });
+      } catch (err) {
+        dispatch({ type: "SET_ERROR", payload: err.message });
+      } finally {
+        dispatch({ type: "SET_LOADING", payload: false });
       }
-      fetchCityData();
-    },
-    [lat, lng]
-  );
-
-  if (state.errorLoc) return <Message message={state.errorLoc} />;
+    }
+    fetchCityData();
+  }, [lat, lng]);
 
   if (state.isLoadingGeoCoding) return <Spinner />;
+  if (!lat && !lng)
+    return <Message message="please select a location on the map." />;
+  if (state.errorLoc) return <Message message={state.errorLoc} />;
 
   return (
     <form className={styles.form}>
@@ -105,7 +101,10 @@ function Form() {
         <input
           id="cityName"
           onChange={(e) =>
-            dispatch({ type: ACTIONS.SET_FIELD, field: "cityName", value: e.target.value })
+            dispatch({
+              type: "SET_FIELD",
+              payload: { cityName: e.target.value },
+            })
           }
           value={state.cityName}
         />
@@ -113,13 +112,25 @@ function Form() {
       </div>
 
       <div className={styles.row}>
+        {/* jsx: htmlfor  html: for */}
         <label htmlFor="date">When did you go to {state.cityName}?</label>
-        <input
+        {/* <input
           id="date"
           onChange={(e) =>
-            dispatch({ type: ACTIONS.SET_FIELD, field: "date", value: e.target.value })
+            dispatch({ type: "SET_FIELD", payload: { date: e.target.value } })
           }
           value={state.date}
+        /> */}
+        <DatePicker
+          onChange={(date) =>
+            dispatch({
+              type: "SET_FIELD",
+              payload: { date: date },
+            })
+          }
+          selected={state.date}
+          dateFormat="dd-MM-yyyy"
+          id="date"
         />
       </div>
 
@@ -128,7 +139,7 @@ function Form() {
         <textarea
           id="notes"
           onChange={(e) =>
-            dispatch({ type: ACTIONS.SET_FIELD, field: "notes", value: e.target.value })
+            dispatch({ type: "SET_FIELD", payload: { notes: e.target.value } })
           }
           value={state.notes}
         />
