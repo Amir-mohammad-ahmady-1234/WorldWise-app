@@ -1,4 +1,5 @@
 import { createContext, useContext, useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 
 const BASE_URL = "http://localhost:9000";
 const jsonFilePath = "../data/cities.json";
@@ -32,10 +33,8 @@ function CitiesProvider({ children }) {
     try {
       setIsLoading(true);
       const res = await fetch(`${BASE_URL}/cities/${id}`);
-      // const res = await fetch(`${jsonFilePath}/${id}`);
       const data = await res.json();
       setCurrentCity(data);
-      // setCities(data.cities);
     } catch {
       console.warn("can not loading data ....");
     } finally {
@@ -43,9 +42,28 @@ function CitiesProvider({ children }) {
     }
   }
 
+  async function addCity(newCity) {
+    try {
+      setIsLoading(true);
+      const res = await fetch(`${BASE_URL}/cities`, {
+        method: "POST",
+        headers: {
+          "Content-type": "application/json",
+        },
+        body: JSON.stringify(newCity),
+      });
+      const data = await res.json();
+      setCities((cities) => [...cities, data]);
+    } catch {
+      console.warn("can not put data ....");
+    } finally {
+      setIsLoading(false);
+    }
+  }
+
   return (
     <CitiesContext.Provider
-      value={{ cities, isLoading, getCity, currentCity, isLoading }}
+      value={{ cities, isLoading, getCity, currentCity, isLoading, addCity }}
     >
       {children}
     </CitiesContext.Provider>
