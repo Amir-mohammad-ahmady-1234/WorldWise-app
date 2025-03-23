@@ -40,7 +40,18 @@ Make sure you have the following installed:
 
 ## Running the Project Locally
 
-Start the Vite development server:
+1. run json-server :
+
+```sh
+npm run server
+```
+_or_
+```sh
+yarn server
+```
+
+
+2. Start the Vite development server:
 
 ```sh
 npm run dev
@@ -50,7 +61,7 @@ _or_
 yarn dev
 ```
 
-After running the command, you should see an output like this:
+3. After running the command, you should see an output like this:
 
 ```sh
 VITE vX.X.X  ready in Xms
