@@ -24,3 +24,8 @@
   flex-direction: column;
   gap: 0.5rem;
 }
+
+.logErr {
+  color: red;
+  text-align: center;
+}

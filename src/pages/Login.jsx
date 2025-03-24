@@ -9,24 +9,27 @@ export default function Login() {
   // PRE-FILL FOR DEV PURPOSES
   const [email, setEmail] = useState("jack@example.com");
   const [password, setPassword] = useState("qwerty");
-  const {login, isAuthenticated} = useAuth()
-  
-  const navigate = useNavigate()
+  const { login, isAuthenticated, loginErr } = useAuth();
 
+  const navigate = useNavigate();
 
-  useEffect(function () {
-    login(email, password)
-  }, [email, password])
+  useEffect(
+    function () {
+      if (isAuthenticated) navigate("/app", { replace: true });
+    },
+    [isAuthenticated, navigate]
+  );
 
-  function handleSubmit (e) {
-    e.preventDefault()
+  function handleSubmit(e) {
+    e.preventDefault();
 
-    if (isAuthenticated) navigate('/app') 
-  } 
+    if (email && password) login(email, password);
+  }
 
   return (
     <main className={styles.login}>
       <PageNav />
+      {loginErr && <h1 className={styles.logErr}>{loginErr}</h1>}
       <form className={styles.form} onSubmit={handleSubmit}>
         <div className={styles.row}>
           <label htmlFor="email">Email address</label>

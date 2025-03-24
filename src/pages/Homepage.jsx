@@ -19,11 +19,9 @@ export default function Homepage() {
           of. Never forget your wonderful experiences, and show your friends how
           you have wandered the world.
         </h2>
-        {isAuthenticated ? <Link className="cta" to="/app">
-          START TRACKING NOW
-        </Link> : <Link className="cta" to="/login">
-          START TRACKING 
-        </Link>}
+        <Link className="cta" to="/login">
+          START TRACKING
+        </Link>
         {/* <Link className="cta" to="/app">
           START TRACKING NOW
         </Link> */}
