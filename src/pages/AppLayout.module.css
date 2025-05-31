@@ -4,4 +4,21 @@
   overscroll-behavior-y: none;
   display: flex;
   position: relative;
+  overflow: hidden;
+}
+
+@media (max-width: 900px) {
+  .app {
+    flex-direction: column;
+    height: auto;
+    min-height: 100vh;
+    padding: 1.2rem;
+    overflow: visible;
+  }
+}
+
+@media (max-width: 600px) {
+  .app {
+    padding: 0.8rem;
+  }
 }

@@ -1,18 +1,41 @@
 /* Taken from getting started guide at: https://leafletjs.com/examples/quick-start/ */
 @import "https://unpkg.com/leaflet@1.9.4/dist/leaflet.css";
-@import "https://fonts.googleapis.com/css2?family=Manrope:wght@400;600;700;800&display=swap";
+@import "https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap";
 
 /* These CSS variables are global, so they are available in all CSS modules */
 :root {
-  --color-brand--1: #ffb545;
-  --color-brand--2: #00c46a;
+  /* Brand Colors */
+  --color-brand--1: #ff8c00;
+  --color-brand--2: #00b894;
 
-  --color-dark--0: #242a2e;
+  /* Dark Theme Colors */
+  --color-dark--0: #1a1d1f;
   --color-dark--1: #2d3439;
   --color-dark--2: #42484d;
+
+  /* Light Theme Colors */
   --color-light--1: #aaa;
   --color-light--2: #ececec;
-  --color-light--3: #d6dee0;
+  --color-light--3: #f5f6f7;
+
+  /* Shadows */
+  --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.05);
+  --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1),
+    0 2px 4px -1px rgba(0, 0, 0, 0.06);
+  --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1),
+    0 4px 6px -2px rgba(0, 0, 0, 0.05);
+
+  /* Border Radius */
+  --border-radius-sm: 0.375rem;
+  --border-radius-md: 0.5rem;
+  --border-radius-lg: 0.75rem;
+
+  /* Spacing */
+  --spacing-xs: 0.5rem;
+  --spacing-sm: 1rem;
+  --spacing-md: 1.5rem;
+  --spacing-lg: 2rem;
+  --spacing-xl: 3rem;
 }
 
 * {
@@ -27,32 +50,37 @@ html {
 }
 
 body {
-  font-family: "Manrope", sans-serif;
+  font-family: "Inter", sans-serif;
   color: var(--color-light--2);
   font-weight: 400;
   line-height: 1.6;
+  background-color: var(--color-dark--0);
 }
 
 label {
-  font-size: 1.6rem;
-  font-weight: 600;
+  font-size: 1.4rem;
+  font-weight: 500;
+  color: var(--color-light--2);
+  margin-bottom: var(--spacing-xs);
 }
 
 input,
 textarea {
   width: 100%;
-  padding: 0.8rem 1.2rem;
+  padding: 1rem 1.2rem;
   font-family: inherit;
-  font-size: 1.6rem;
-  border: none;
-  border-radius: 5px;
-  background-color: var(--color-light--3);
+  font-size: 1.4rem;
+  border: 1px solid var(--color-dark--2);
+  border-radius: var(--border-radius-md);
+  background-color: var(--color-dark--1);
+  color: var(--color-light--2);
   transition: all 0.2s;
 }
 
 input:focus {
   outline: none;
-  background-color: #fff;
+  border-color: var(--color-brand--2);
+  box-shadow: 0 0 0 2px rgba(0, 184, 148, 0.2);
 }
 
 .cta:link,
@@ -62,10 +90,57 @@ input:focus {
   color: var(--color-dark--1);
   text-transform: uppercase;
   text-decoration: none;
-  font-size: 1.6rem;
+  font-size: 1.4rem;
   font-weight: 600;
-  padding: 1rem 3rem;
-  border-radius: 5px;
+  padding: 1rem 2rem;
+  border-radius: var(--border-radius-md);
+  transition: all 0.2s;
+  box-shadow: var(--shadow-md);
+}
+
+.cta:hover {
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-lg);
+}
+
+/* Card Styles */
+.card {
+  background-color: var(--color-dark--1);
+  border-radius: var(--border-radius-lg);
+  padding: var(--spacing-md);
+  box-shadow: var(--shadow-md);
+  transition: all 0.2s;
+}
+
+.card:hover {
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-lg);
+}
+
+/* Button Styles */
+.btn {
+  padding: 0.8rem 1.6rem;
+  border-radius: var(--border-radius-md);
+  font-weight: 500;
+  transition: all 0.2s;
+  cursor: pointer;
+  border: none;
+  font-size: 1.4rem;
+}
+
+.btn-primary {
+  background-color: var(--color-brand--2);
+  color: var(--color-dark--1);
+}
+
+.btn-secondary {
+  background-color: var(--color-dark--2);
+  color: var(--color-light--2);
+}
+
+.btn:hover {
+  transform: translateY(-1px);
+  box-shadow: var(--shadow-md);
 }
 
 /*
@@ -76,3 +151,74 @@ input:focus {
     "description": "Import CSS Module as `styles`"
   },
 */
+
+/* Responsive Design */
+@media (max-width: 1200px) {
+  html {
+    font-size: 56.25%;
+  }
+}
+
+@media (max-width: 900px) {
+  html {
+    font-size: 50%;
+  }
+
+  .app {
+    flex-direction: column;
+  }
+
+  .sidebar {
+    flex-basis: auto;
+    height: auto;
+    padding: 2rem;
+  }
+
+  .countryList {
+    grid-template-columns: 1fr;
+  }
+
+  .product section {
+    grid-template-columns: 1fr;
+    gap: 3rem;
+  }
+}
+
+@media (max-width: 600px) {
+  html {
+    font-size: 43.75%;
+  }
+
+  .homepage {
+    padding: 2rem;
+  }
+
+  .homepage h1 {
+    font-size: 3.5rem;
+  }
+
+  .homepage h2 {
+    font-size: 1.6rem;
+  }
+
+  .nav ul {
+    gap: 2rem;
+  }
+
+  .user {
+    top: 2rem;
+    right: 2rem;
+  }
+
+  .form {
+    padding: 1.5rem 2rem;
+  }
+
+  .card {
+    padding: var(--spacing-sm);
+  }
+
+  .btn {
+    padding: 0.6rem 1.2rem;
+  }
+}

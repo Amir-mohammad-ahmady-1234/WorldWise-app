@@ -29,3 +29,38 @@
   color: red;
   text-align: center;
 }
+
+@media (max-width: 900px) {
+  .login {
+    margin: 1.5rem;
+    padding: 1.5rem 3rem;
+  }
+
+  .form {
+    width: 90%;
+    max-width: 48rem;
+    margin: 4rem auto;
+    padding: 1.5rem 2rem;
+  }
+}
+
+@media (max-width: 600px) {
+  .login {
+    margin: 1rem;
+    padding: 1rem 2rem;
+  }
+
+  .form {
+    width: 100%;
+    margin: 2rem auto;
+    padding: 1.2rem 1.5rem;
+  }
+
+  .row {
+    gap: 0.3rem;
+  }
+
+  .logErr {
+    font-size: 1.4rem;
+  }
+}

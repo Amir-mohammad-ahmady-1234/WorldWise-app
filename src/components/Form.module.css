@@ -1,23 +1,26 @@
 .form {
-  background-color: var(--color-dark--2);
-  border-radius: 7px;
-  padding: 2rem 3rem;
+  background-color: var(--color-dark--1);
+  border-radius: var(--border-radius-lg);
+  padding: var(--spacing-lg);
   width: 100%;
   display: flex;
   flex-direction: column;
-  gap: 2rem;
+  gap: var(--spacing-md);
+  box-shadow: var(--shadow-lg);
 }
 
 .row {
   display: flex;
   flex-direction: column;
-  gap: 0.5rem;
+  gap: var(--spacing-xs);
   position: relative;
 }
 
 .buttons {
   display: flex;
   justify-content: space-between;
+  gap: var(--spacing-sm);
+  margin-top: var(--spacing-sm);
 }
 
 .flag {
@@ -25,20 +28,76 @@
   right: 1rem;
   top: 2.7rem;
   font-size: 2.8rem;
+  filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.1));
 }
 
 .form.loading {
   opacity: 0.3;
+  pointer-events: none;
 }
 
 .form.loading button {
-  pointer-events: none;
   background-color: var(--color-light--1);
   border: 1px solid var(--color-light--1);
   color: var(--color-dark--0);
+  cursor: not-allowed;
 }
 
 :global(.react-datepicker) {
   font-family: inherit;
   font-size: 1.2rem;
+  background-color: var(--color-dark--1) !important;
+  border: 1px solid var(--color-dark--2) !important;
+  border-radius: var(--border-radius-md) !important;
+  box-shadow: var(--shadow-lg) !important;
+}
+
+:global(.react-datepicker__header) {
+  background-color: var(--color-dark--2) !important;
+  border-bottom: 1px solid var(--color-dark--2) !important;
+}
+
+:global(.react-datepicker__current-month),
+:global(.react-datepicker__day-name),
+:global(.react-datepicker__day) {
+  color: var(--color-light--2) !important;
+}
+
+:global(.react-datepicker__day:hover) {
+  background-color: var(--color-brand--2) !important;
+  color: var(--color-dark--1) !important;
+}
+
+:global(.react-datepicker__day--selected) {
+  background-color: var(--color-brand--2) !important;
+  color: var(--color-dark--1) !important;
+}
+
+@media (max-width: 900px) {
+  .form {
+    padding: var(--spacing-md);
+  }
+}
+
+@media (max-width: 600px) {
+  .form {
+    padding: var(--spacing-sm);
+  }
+
+  .row {
+    gap: 0.3rem;
+  }
+
+  .buttons {
+    flex-direction: column;
+    gap: var(--spacing-sm);
+  }
+
+  .buttons button {
+    width: 100%;
+  }
+
+  .flag {
+    font-size: 2.4rem;
+  }
 }

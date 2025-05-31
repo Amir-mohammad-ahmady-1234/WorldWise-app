@@ -45,3 +45,45 @@
   font-size: 1.6rem;
   color: var(--color-brand--1);
 }
+
+@media (max-width: 900px) {
+  .city {
+    max-height: none;
+    padding: 1.5rem 2rem;
+  }
+
+  .city h3 {
+    font-size: 1.7rem;
+  }
+
+  .city h3 span {
+    font-size: 2.8rem;
+  }
+
+  .city p {
+    font-size: 1.4rem;
+  }
+}
+
+@media (max-width: 600px) {
+  .city {
+    padding: 1.2rem 1.5rem;
+  }
+
+  .city h3 {
+    font-size: 1.5rem;
+  }
+
+  .city h3 span {
+    font-size: 2.4rem;
+  }
+
+  .city p {
+    font-size: 1.2rem;
+  }
+
+  .city a:link,
+  .city a:visited {
+    font-size: 1.2rem;
+  }
+}
