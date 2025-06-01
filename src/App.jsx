@@ -5,7 +5,7 @@ import { lazy, Suspense } from "react";
 
 import { CitiesProvider } from "./contexts/CitiesContext";
 import { AuthProvider } from "./contexts/FakeAuthContext";
-import ProtectingRoute from "./pages/protectingRoute";
+import ProtectingRoute from "./pages/ProtectingRoute";
 
 import CityList from "./components/CityList";
 import CountryList from "./components/countryList";
